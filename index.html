@@ -72,7 +72,7 @@
 
   <main class="container">
     <header>
-      <h1>LAG-DiffAE: Long-Axis Guided Diffusion Autoencoder for Structure-Aware Through-Plane Super-Resolution of 4-D Cine Cardiac MRI</h1>
+      <h1>MGDCR: Multi-View-Guided Diffusion Model for Cardiac Volume Reconstruction</h1>
       <div class="authors">
         <!-- Replace # with your links -->
         <a href="#">Jun hee Kim</a>,
@@ -96,18 +96,18 @@
     <section id="abstract">
       <h2>Abstract</h2>
       <p>
-          4D cine MRI is essential for cardiac function assessment. It offers continuous observation of ventricular dynamics, but its low through-plane resolution compromises anatomical continuity between slices and degrades the accuracy of essential clinical metrics, such as ventricular boundary delineation and ejection fraction (EF) calculation. We present LAG-DiffAE (Long-Axis Guided Diffusion Autoencoder), which integrates guidance from long-axis (LAX) views into an unsupervised through-plane interpolation framework. A diffusion autoencoder is pre-trained on 400 healthy-subject SAX volumes from UK Biobank and fine-tuned on 230 heart-failure cases. Given adjacent SAX slices, we synthesize intermediate planes by interpolating disentangled semantic and stochastic latents, then refine them via inverse optimization that aligns LAX-plane projections, enforces slice-to-slice continuity, and regularizes deviation from interpolated seeds. The method improves structural consistency and continuity over existing models, as shown by higher Dice and lower HD95, with visualizations confirming chamber-level coherence. This approach provides a practical solution to cine-MRI resolution limits and potential for future volumetric and functional analyses.
+          4D cine MRI is essential for cardiac function assessment. It offers continuous observation of ventricular dynamics, but its low through-plane resolution compromises anatomical continuity between slices and degrades the accuracy of essential clinical metrics, such as ventricular boundary delineation and ejection fraction (EF) calculation. We present MGDCR (Long-Axis Guided Diffusion Autoencoder), which integrates guidance from long-axis (LAX) views into an unsupervised through-plane interpolation framework. A diffusion autoencoder is pre-trained on 400 healthy-subject SAX volumes from UK Biobank and fine-tuned on 230 heart-failure cases. Given adjacent SAX slices, we synthesize intermediate planes by interpolating disentangled semantic and stochastic latents, then refine them via inverse optimization that aligns LAX-plane projections, enforces slice-to-slice continuity, and regularizes deviation from interpolated seeds. The method improves structural consistency and continuity over existing models, as shown by higher Dice and lower HD95, with visualizations confirming chamber-level coherence. This approach provides a practical solution to cine-MRI resolution limits and potential for future volumetric and functional analyses.
       </p>
     </section>
 
     <section id="method">
       <h2>Method</h2>
       <p>
-        For the super-resolution task, LAX-DiffAE additionally takes one condition : Long-Axis cine MRI. 
+        For the super-resolution task, MGDCR additionally takes one condition : Long-Axis cine MRI. 
       </p>
       <figure class="figure">
-        <img src="img/overview_figure.png" alt="Overview of the proposed LAG-DiffAE framework" />
-        <figcaption class="caption">(a) Overview of LAG-DiffAE </figcaption>
+        <img src="img/overview_figure.png" alt="Overview of the proposed MGDCR framework" />
+        <figcaption class="caption">(a) Overview of MGDCR </figcaption>
       </figure>
       <p>
         The proposed method introduces a structure-aware latent interpolation and optimization framework for reconstructing high-resolution SAX volumes from sparse 2D inputs. First, a Diffusion Autoencoder (DiffAE) is pretrained to disentangle each SAX slice into two latent components: a semantic representation that encodes anatomical geometry and a stochastic representation that captures fine-scale variations. Without paired supervision, the model learns to regularize each branch with its own prior, ensuring meaningful structure and realistic details. During reconstruction, two adjacent SAX slices are encoded, and their latent features are interpolated: semantic codes are linearly blended to preserve structural fidelity, while stochastic codes are interpolated via spherical interpolation (slerp) to generate smooth, natural details. The interpolated latent pair is then decoded to synthesize the intermediate slice, and repeating this process across all gaps yields an initial high-resolution SAX volume. To enhance global anatomical consistency, a long-axis (LAX) guided inverse optimization step refines each slice’s latent representation by enforcing alignment with the acquired LAX projections, maintaining slice-to-slice continuity, and constraining deviations from the interpolated seeds. These three complementary objectives—projection consistency, slice continuity, and latent regularization—jointly balance local accuracy and global coherence. Because the pretrained decoder acts as a fixed generative prior, optimization remains within a valid latent manifold, preventing implausible reconstructions. As a result, the method achieves anatomically faithful, volumetrically consistent reconstructions that respect both SAX local detail and LAX global guidance
@@ -262,3 +262,4 @@
   </script>
 </body>
 </html>
+
